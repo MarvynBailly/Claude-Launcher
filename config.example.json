@@ -1,0 +1,14 @@
+{
+  "host": "127.0.0.1",
+  "port": 7878,
+  "api_key": "",
+  "permission_mode": "default",
+  "auto_trust_directories": false,
+  "pinned_dirs": [],
+  "browse_root": "~",
+  "claude_binary": "claude",
+  "git_binary": "git",
+  "git_log_count": 20,
+  "git_show_remote_branches": true,
+  "cors_origins": []
+}
