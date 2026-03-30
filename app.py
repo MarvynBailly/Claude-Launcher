@@ -1731,7 +1731,7 @@ function renderSessions() {
         </div>
         ${urlBlock}
         <div class="git-inline" data-git-inline="${esc(dir)}"></div>
-        <div class="git-toggle" onclick="toggleGit('${jesc(dir)}')">${openGit[dir] ? '&#9650;' : '&#9660;'} git info</div>
+        <div class="git-toggle" onclick="toggleGit('${jesc(dir)}', this)">${openGit[dir] ? '&#9650;' : '&#9660;'} git info</div>
         <div class="git-panel" data-git-dir="${esc(dir)}" style="display:${openGit[dir] ? 'block' : 'none'}">${gitCache[dir] ? renderGitPanel(gitCache[dir], dir) : ''}</div>
         <div class="log-toggle" onclick="toggleLog('${jesc(dir)}')">${isOpen ? '&#9650;' : '&#9660;'} output log</div>
         <div class="log-box" data-dir="${esc(dir)}" style="display:${isOpen ? 'block' : 'none'}">${esc((s.output_tail || []).join('\n')) || '(empty)'}</div>
@@ -1902,7 +1902,7 @@ function renderPinned() {
           <button class="pin-btn pinned" onclick="togglePin('${jesc(dir)}')" aria-label="Unpin project">&#128204;</button>
         </div>
         <div class="git-inline" data-git-inline="${esc(dir)}"></div>
-        <div class="git-toggle" onclick="toggleGit('${jesc(dir)}')">${openGit[dir] ? '&#9650;' : '&#9660;'} git info</div>
+        <div class="git-toggle" onclick="toggleGit('${jesc(dir)}', this)">${openGit[dir] ? '&#9650;' : '&#9660;'} git info</div>
         <div class="git-panel" data-git-dir="${esc(dir)}" style="display:${openGit[dir] ? 'block' : 'none'}">${gitCache[dir] ? renderGitPanel(gitCache[dir], dir) : ''}</div>
       </div>`;
   }).join('');
@@ -1945,19 +1945,22 @@ async function fetchGitInfo(dir) {
 async function loadGitInline(dir) {
   let data = gitCache[dir];
   if (!data) data = await fetchGitInfo(dir);
-  const el = document.querySelector(`[data-git-inline="${CSS.escape(dir)}"]`);
-  if (!el || !data) return;
+  const els = document.querySelectorAll(`[data-git-inline="${CSS.escape(dir)}"]`);
+  if (!els.length || !data) return;
   const dot = data.is_clean ? 'clean' : 'dirty';
   const branch = data.is_detached ? data.head_hash : data.current_branch;
   let info = `<span class="status-dot ${dot}"></span><span class="branch">${esc(branch)}</span>`;
   if (data.ahead > 0) info += `<span class="git-badge git-badge-ahead">&uarr;${data.ahead}</span>`;
   if (data.behind > 0) info += `<span class="git-badge git-badge-behind">&darr;${data.behind}</span>`;
   if (!data.is_clean) info += `<span class="git-badge git-badge-dirty">${data.dirty_file_count} changed</span>`;
-  el.innerHTML = info;
+  els.forEach(el => el.innerHTML = info);
 }
 
-async function toggleGit(dir) {
-  const panel = document.querySelector(`.git-panel[data-git-dir="${CSS.escape(dir)}"]`);
+async function toggleGit(dir, toggleEl) {
+  const card = toggleEl ? toggleEl.closest('.card') : null;
+  const panel = card
+    ? card.querySelector(`.git-panel[data-git-dir="${CSS.escape(dir)}"]`)
+    : document.querySelector(`.git-panel[data-git-dir="${CSS.escape(dir)}"]`);
   if (!panel) return;
   const isOpen = !!openGit[dir];
   if (isOpen) {
@@ -2081,8 +2084,9 @@ async function gitActionPost(url, body) {
 
 async function refreshGitPanel(dir) {
   await fetchGitInfo(dir);
-  const panel = document.querySelector(`.git-panel[data-git-dir="${CSS.escape(dir)}"]`);
-  if (panel && openGit[dir]) panel.innerHTML = renderGitPanel(gitCache[dir], dir);
+  document.querySelectorAll(`.git-panel[data-git-dir="${CSS.escape(dir)}"]`).forEach(panel => {
+    if (openGit[dir]) panel.innerHTML = renderGitPanel(gitCache[dir], dir);
+  });
   loadGitInline(dir);
 }
 
