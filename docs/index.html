@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Launcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e12;
+    --surface: #13161c;
+    --border: #252a35;
+    --text: #d4d8e0;
+    --text-dim: #6b7280;
+    --text-bright: #f0f2f5;
+    --accent: #e8784e;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .hero-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .hero-icon {
+    width: 52px; height: 52px;
+    background: var(--accent);
+    border-radius: 14px;
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--bg);
+  }
+
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.5px;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 560px;
+    margin: 16px auto 28px;
+    line-height: 1.6;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.15); }
+
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* Sections */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .section .subtitle {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* Media cards */
+  .media-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .media-card img {
+    width: 100%;
+    display: block;
+  }
+
+  /* Features grid */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .feature-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+
+  .feature-card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Quick start */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    overflow-x: auto;
+    line-height: 1.8;
+  }
+
+  .code-block .dim { color: var(--text-dim); }
+  .code-block .accent { color: var(--accent); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    .container { padding: 40px 16px 60px; }
+    .hero h1 { font-size: 28px; }
+    .hero p { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-logo">
+      <div class="hero-icon">RC</div>
+    </div>
+    <h1>Claude Launcher</h1>
+    <p>A single-file web dashboard for managing Claude Code remote-control sessions. Run on your desktop, access from anywhere.</p>
+    <div class="hero-buttons">
+      <a href="https://github.com/MarvynBailly/Claude-Launcher" class="btn btn-primary">View on GitHub</a>
+      <a href="https://github.com/MarvynBailly/Claude-Launcher#quick-start" class="btn btn-ghost">Quick Start</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Dashboard</h2>
+    <p class="subtitle">Monitor active sessions with live status, one-click session URLs, and integrated git info.</p>
+    <div class="media-card">
+      <img src="images/dashboard.png" alt="Dashboard showing an active Claude Code session">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Browse & Launch</h2>
+    <p class="subtitle">Navigate your filesystem with automatic project detection. Hit Start to spawn a remote session.</p>
+    <div class="media-card">
+      <img src="images/browse.gif" alt="Browsing directories and finding projects">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Start a Session</h2>
+    <p class="subtitle">One click to launch a Claude Code remote-control session and get a shareable URL.</p>
+    <div class="media-card">
+      <img src="images/start-session.gif" alt="Starting a remote session">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Git Integration</h2>
+    <p class="subtitle">Full git panel built in. View branches, commits, and graph. Pull, push, commit, and create branches.</p>
+    <div class="media-card">
+      <img src="images/git-panel.png" alt="Git panel with branches and commit history">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Features</h2>
+    <div class="features">
+      <div class="feature-card">
+        <h3>Single File</h3>
+        <p>One Python file with an embedded frontend. No build step, no node_modules, no separate assets.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Mobile-First</h3>
+        <p>Designed for phone use with proper touch targets and responsive layout. Perfect for Tailscale access.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Authentication</h3>
+        <p>Optional API key auth with a built-in login screen. Protects your sessions on the network.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Cross-Platform</h3>
+        <p>Works on Windows, macOS, and Linux with proper process management on each platform.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Quick Start</h2>
+    <div class="code-block">
+      <span class="dim">$</span> git clone https://github.com/MarvynBailly/Claude-Launcher.git<br>
+      <span class="dim">$</span> <span class="accent">cd</span> Claude-Launcher<br>
+      <span class="dim">$</span> pip install -r requirements.txt<br>
+      <span class="dim">$</span> python app.py<br>
+      <br>
+      <span class="dim"># Open http://localhost:7878</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>MIT License &middot; <a href="https://github.com/MarvynBailly/Claude-Launcher">GitHub</a></p>
+</footer>
+
+</body>
+</html>
